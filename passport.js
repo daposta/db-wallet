@@ -34,9 +34,7 @@ module.exports = (passport) => {
             
             // This flow look familiar?  It is the same as when we implemented
             // the `passport-local` strategy
-            console.log('zooom');
-            console.log(jwt_payload.body);
-            console.log(req.body);
+            
             if (err) {
                 return done(err, false);
             }

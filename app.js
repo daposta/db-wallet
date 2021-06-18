@@ -8,7 +8,7 @@ const app = express();
 require('dotenv').config();
 
 app.use(express.json());
-// app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 
 app.use(require('./routes'));
 
@@ -16,10 +16,10 @@ require('./passport')(passport);
 
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.urlencoded({ extended: false }))
 
-// parse application/json
-app.use(bodyParser.json())
+// // parse application/json
+// app.use(bodyParser.json())
 
 
 // This will initialize the passport object on every request

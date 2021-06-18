@@ -16,7 +16,6 @@ router.get('/', (req, res) =>{
 //login route
 router.post('/login', (req, res) =>{
   const { email, password} = req.body;
-
   let errors =[]
 
   //check required fieds
@@ -30,7 +29,9 @@ router.post('/login', (req, res) =>{
          res.send({msg: 'Email is not found'});
       }
       //match password
+      
       bcrypt.compare(password, user.password, (err, isMatch) =>{
+        
         if(err) throw err
         if(isMatch){
           const _jwt = utils.issueJWToken(user);
@@ -124,6 +125,7 @@ router.post('/debit', checkAuth, (req, res, next) =>{
         _wallet.available_balance = _wallet.available_balance - req.body.amount
          _wallet.total_balance = _wallet.total_balance - req.body.amount
           _wallet.ledger_balance = _wallet.ledger_balance - req.body.amount
+          _wallet.updatedAt = 
         _wallet.save().then(savedDoc => {
           return res.send({msg: `Account debited successfully. You now have a balance of ${ _wallet.available_balance}`}) // true
         });
@@ -138,10 +140,7 @@ router.post('/debit', checkAuth, (req, res, next) =>{
 
 //debit route
 router.post('/credit', checkAuth, (req, res, next) =>{
-   //res.send('debit route');
   
-  
-
    if(!req.body.amount){
     return res.send({msg: "Enter amount to be credited"});
     
@@ -162,5 +161,21 @@ router.post('/credit', checkAuth, (req, res, next) =>{
    
 });
 
+
+//debit route
+router.get('/balance', checkAuth, (req, res, next) =>{
+   //res.send('debit route');
+  
+  
+    Wallet.findOne({owner : req.userData})
+    .then(_wallet => {
+    
+          return res.send(_wallet) 
+       
+      
+    })
+    
+   
+});
 
 module.exports = router;
